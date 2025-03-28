@@ -22,7 +22,12 @@ public class PSNUsers {
      * (todas las búsquedas se realizarán en esta estructura en memoria, 
      *   en lugar de acceder directamente al archivo, para mejorar la eficiencia).
      */
-    HashTable users;      
+    HashTable users;     
+    
+    /**
+     String de info
+     */
+    public String info;
 
     public PSNUsers() throws IOException {     
         File file = new File("archivo.psn");
@@ -168,19 +173,39 @@ public class PSNUsers {
         Luego, imprime sus trofeos en el formato: FECHA – TIPO - JUEGO – DESCRIPCIÓN. (5%)
      */
     void playerInfo(String username) throws IOException {
+        info = "";
+        
         long pos = users.search(username);
         if (pos != -1) {
             psn.seek(pos);
-            System.out.println(psn.readUTF());
-            psn.skipBytes(4);
+            info += psn.readUTF() + "\n";
+            info += "Puntos: " + psn.readInt() + "\n";
             int trofeos = psn.readInt();
+            info += "Trofeos: " + trofeos + "\n";
+            info += "///////////////////////////////";
             System.out.println(trofeos);
             
             for (int i = 0; i < trofeos; i++) {
-                psn.readInt();
-                psn.readLong();
-                psn.readUTF();
-                psn.readUTF();
+                String trophy = "";
+                switch (psn.readInt()) {
+                    case 5-> {
+                        trophy = Trophy.PLATINO.name();
+                    }
+                    case 3 -> {
+                        trophy = Trophy.ORO.name();
+                    }
+                    case 2 -> {
+                        trophy = Trophy.PLATA.name();
+                    }
+                    case 1 -> {
+                        trophy = Trophy.BRONCE.name();
+                    }
+                }
+                
+                info += "Tipo de trofeo: " +  trophy + "\n";
+                info += "Fecha (en milli)" + psn.readLong() + "\n";
+                info += "Nombre de Juego: " + psn.readUTF() + "\n";
+                info += "Nombre de Trofeo: " + psn.readUTF() + "\n";
             }
         }
     }

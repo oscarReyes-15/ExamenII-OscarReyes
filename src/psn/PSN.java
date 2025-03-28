@@ -18,34 +18,9 @@ public class PSN {
     public static void main(String[] args) {
          try {
             PSNUsers psn = new PSNUsers();
-            
-            // Agregar usuarios
-            psn.addUser("player1");
-            psn.addUser("player2");
-            psn.addUser("player3");
-            
-            // Mostrar información de los usuarios
-            psn.playerInfo("player1");
-            psn.playerInfo("player2");
-            psn.playerInfo("player3");
-            
-            // Agregar trofeos
-            psn.addTrophieTo("player1", "Game A", "First Blood", Trophy.ORO);
-            psn.addTrophieTo("player2", "Game B", "Unstoppable", Trophy.PLATINO);
-            psn.addTrophieTo("player3", "Game C", "Master Explorer", Trophy.PLATA);
-            
-            // Mostrar información después de añadir trofeos
-            psn.playerInfo("player1");
-            psn.playerInfo("player2");
-            psn.playerInfo("player3");
-            
-            // Desactivar un usuario
-            psn.deactivateUser("player2");
-            
-            // Intentar mostrar la información del usuario desactivado
-            psn.playerInfo("player2");
+            new GUI(psn);
         } catch (IOException e) {
-            e.printStackTrace();
+             System.err.println(e);
         }
     }
     
